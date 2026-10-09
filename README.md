@@ -16,6 +16,7 @@
   <a href="#features">能做什么</a> ｜
   <a href="#start">快速开始</a> ｜
   <a href="#agent">直接交给 Agent</a> ｜
+  <a href="#reading">查阅 Wiki</a> ｜
   <a href="#architecture">如何工作</a> ｜
   <a href="#limits">当前边界</a>
 </p>
@@ -148,6 +149,22 @@ Codex 可发现仓库内的 [zhihuer-wiki Skill](.agents/skills/zhihuer-wiki/SKI
 
 不需要登录知乎的练习材料在 [samples/demo-raw](samples/demo-raw)，全部为虚构文本。用 `--raw-dir samples/demo-raw` 导入，仍需真实 Agent 做语义提取，示例不会冒充真实抓取结果。
 
+<a id="reading"></a>
+
+## 📖 让 Agent 查阅已有 Wiki
+
+有文件读取和文本搜索能力的 Agent 可以直接使用产物，不需要额外的工具服务器。在项目里发送：
+
+```text
+读取 .agents/skills/zhihuer-wiki/SKILL.md，
+使用 outputs/你的URL-token/wiki 回答：这位博主在选择工作时更看重什么？
+先从主题目录定位，按需读条目和原文，给出文件出处。
+```
+
+Agent 从 `index.md` 出发，沿主题页、子页、条目找到原话和原文；有信息缺口再沿链接补读或使用文本搜索。时间与条件不同的表达分别保留，不默认把整个 `readable.md` 塞进上下文。单独搬走 Wiki 后也可以把[查阅说明](docs/reading.md)交给 Agent，并指定新的文件夹路径。
+
+查阅不会启动新抓取或修改 Wiki。完整规则与例子见[查阅说明](docs/reading.md)。
+
 <a id="architecture"></a>
 
 ## ⚙️ 如何工作
@@ -201,12 +218,13 @@ Codex 可发现仓库内的 [zhihuer-wiki Skill](.agents/skills/zhihuer-wiki/SKI
 - **抓取范围**：只能处理本机当前可访问的内容；限量或部分抓取会保留范围报告，不承诺获得某位博主的全部历史。
 - **模型质量**：核验能拒绝编造引文和丢失归属，不能证明转述与分类始终正确。人物 Wiki 是来源绑定的整理结果，不是经过本人确认的人格档案。
 - **更新**：同一工作区用于断点恢复。原文变更或增加材料先构建到新的 `--out`；本版不实现跨版本局部语义合并，避免把旧观点悄悄覆盖。
-- **阅读与搜索**：产物提供链接与层次，尚无内置 Agentic Search 或生成质量评估，也没有接入任何 LLM API provider。
+- **阅读与搜索**：Skill 提供使用现有文件工具查阅的规则；没有内置 Agentic Search 运行器或生成质量评估，也没有接入任何 LLM API provider。
 - **使用成本**：不另收模型API费用不等于免费推理；Agent额度、本地模型下载与计算成本仍由自己的环境承担。
 
 ## 📚 深入了解
 
 - [构建工作流与文件结构](docs/workflow.md)
+- [查阅 Wiki 的规则与例子](docs/reading.md)
 - [Agent Skill](.agents/skills/zhihuer-wiki/SKILL.md)
 - [项目契约](SPEC.md)
 - [验证记录](docs/verification.md)
