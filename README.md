@@ -1,7 +1,7 @@
 <h1 align="center">Zhihuer-Wiki</h1>
 
 <p align="center"><strong>把一个知乎博主，变成一份人物 Wiki。</strong></p>
-<p align="center">给 Agent 一个主页，拿回有原话、有时间、有出处的知识文件夹。</p>
+<p align="center">给 Agent 一个知乎用户主页，拿回有原话、有时间、有出处的知识文件夹。</p>
 
 <p align="center">
   <img alt="Python 3.11+" src="https://img.shields.io/badge/Python-3.11%2B-2277f5?style=flat-square">
@@ -22,7 +22,7 @@
 
 Zhihuer-Wiki 是一个开源、在本地运行的人物 Wiki 构建工具。从知乎回答、文章和想法中提取观点条目，再组织成可逐层阅读的主题与子页。原文始终保留，概括始终带着出处。
 
-**模型工作交给你已有的 Codex 或其他编程 Agent。** 项目负责爬取、切批、准备任务、核验和导出，不需要配置 LLM API key，不启动 PersonClone，也不需要 Qdrant。使用 Agent 仍会消耗它的订阅额度或相应费用。
+**模型工作交给你已有的 Codex 或其他编程 Agent。** 项目负责爬取、切批、准备任务、核验和导出，使用 Agent 仍会消耗它的订阅额度或相应费用。
 
 <a id="features"></a>
 
