@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "zhihuer-wiki"
+version = "0.1.0"
+description = "Turn a Zhihu profile into a source-grounded Persona Wiki with your coding agent."
+readme = "README.md"
+requires-python = ">=3.11"
+license = {file = "LICENSE"}
+dependencies = ["beautifulsoup4>=4.12,<5", "PyYAML>=6,<7", "jsonschema>=4.20,<5", "numpy>=1.24", "scikit-learn>=1.3", "playwright>=1.44,<2"]
+
+[project.optional-dependencies]
+semantic = ["sentence-transformers>=3,<6"]
+dev = ["pytest>=8,<10"]
+
+[project.scripts]
+zhihuer-wiki = "zhihuer_wiki.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+zhihuer_wiki = ["prompts/*.md"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

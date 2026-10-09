@@ -1,0 +1,20 @@
+# User-owned runtime data and credentials
+outputs/
+.local/
+data/
+.env
+.env.*
+*storage_state*.json
+*cookies*.json
+*.log
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+build/
+dist/
+.cache/
+.DS_Store
+Thumbs.db
