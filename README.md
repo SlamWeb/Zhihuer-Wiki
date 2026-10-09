@@ -116,6 +116,8 @@ outputs/<URL-token>/wiki/readable.md
 .\.venv\Scripts\python.exe -m zhihuer_wiki validate --workspace outputs/你的URL-token
 ```
 
+已完成干净克隆的真实小样本验证：输入URL token，重新抓取3篇知乎回答，使用已登录Codex调用Luna，导出12条条目、7个子页和5个主题，结构与出处核验通过。113项离线测试通过；这不代表全量语料的语义质量已经验证。详见[验证记录](docs/verification.md)。
+
 <a id="agent"></a>
 
 ## 🪄 直接交给 Codex 或其他 Agent

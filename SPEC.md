@@ -1,6 +1,6 @@
 # Zhihuer-Wiki contract
 
-Status: first standalone release in development. This is a product extraction, not a second PersonClone research checkout.
+Status: standalone V1 verified on 2026-10-09 with 113 offline tests and a clean-clone, real Zhihu-to-Codex-Luna smoke run. This is a product extraction, not a second PersonClone research checkout. Small-sample evidence does not validate full-corpus semantic quality or the real embedding download path; see docs/verification.md.
 
 Input: a Zhihu profile URL or URL token (a display nickname is not a unique identifier), or an existing crawler Markdown directory. Output: a local, portable Wiki folder.
 
