@@ -1,0 +1,50 @@
+[
+  {
+    "entry_id": "fictional-e1",
+    "doc_id": "fictional-notebook-1",
+    "published_at": "2025-01-01",
+    "quote": "On our imaginary island, I lend seeds only after writing their planting month.",
+    "paraphrase": "Record the planting month before lending.",
+    "context": "Fictional first season; seed lending on the imaginary island."
+  },
+  {
+    "entry_id": "fictional-e2",
+    "doc_id": "fictional-notebook-1",
+    "published_at": "2025-01-01",
+    "quote": "For first-time gardeners, I prefer one small pot to a large plot.",
+    "paraphrase": "Start beginners with a small pot.",
+    "context": "Applies to first-time gardeners, not experienced gardeners."
+  },
+  {
+    "entry_id": "fictional-e3",
+    "doc_id": "fictional-notebook-1",
+    "published_at": "2025-01-01",
+    "quote": "When the rainy season arrives, I move the seed envelopes to a dry shelf.",
+    "paraphrase": "Protect seed envelopes from the rainy season.",
+    "context": "Conditional on the rainy season arriving."
+  },
+  {
+    "entry_id": "fictional-e4",
+    "doc_id": "fictional-notebook-2",
+    "published_at": "2025-02-01",
+    "quote": "In the later season, I still record the planting month before lending seeds.",
+    "paraphrase": "The recording practice continues in the later season.",
+    "context": "Later fictional notebook; this does not establish a timeless rule."
+  },
+  {
+    "entry_id": "fictional-e5",
+    "doc_id": "fictional-notebook-2",
+    "published_at": "2025-02-01",
+    "quote": "For experienced gardeners with shared tools, I now suggest a larger plot.",
+    "paraphrase": "A larger plot is suggested for experienced gardeners with shared tools.",
+    "context": "A later expression under different experience and equipment conditions."
+  },
+  {
+    "entry_id": "fictional-e6",
+    "doc_id": "fictional-notebook-2",
+    "published_at": "2025-02-01",
+    "quote": "If the dry shelf is full, I postpone lending until the envelopes can stay dry.",
+    "paraphrase": "Delay lending when dry storage is unavailable.",
+    "context": "Conditional on a full dry shelf; preserve this limitation."
+  }
+]

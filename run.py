@@ -1,4 +1,4 @@
-"""Clone-and-run bootstrap. Python 3.11+, no global installation or API secrets."""
+"""Legacy V1 bootstrap; new Agent-first V2 builds follow docs/build-with-agent.md."""
 from __future__ import annotations
 
 import hashlib
@@ -11,7 +11,8 @@ import venv
 def main(argv: list[str] | None = None) -> int:
     argv = sys.argv[1:] if argv is None else argv
     if not argv or argv[0] in {"-h", "--help"}:
-        print("Usage: python run.py ZHIHU_PROFILE_OR_TOKEN [build options]\n"
+        print("Legacy V1 job runner. New Agent-first V2: read .agents/skills/zhihuer-wiki/SKILL.md.\n"
+              "Usage: python run.py ZHIHU_PROFILE_OR_TOKEN [build options]\n"
               "Creates a local .venv, installs dependencies, and builds with your logged-in Codex.\n"
               "Use --agent manual for your current agent; --grouping none/tfidf avoids embedding extras.\n"
               "For full CLI help: python -m zhihuer_wiki build --help after installation.")
@@ -19,6 +20,7 @@ def main(argv: list[str] | None = None) -> int:
     if sys.version_info < (3, 11):
         print("Python 3.11+ is required.", file=sys.stderr)
         return 1
+    print("[V1] 旧版自动任务运行器；Agent 直接建 V2 请读 docs/build-with-agent.md。", flush=True)
     root = Path(__file__).resolve().parent
     environment = root / ".venv"
     python = environment / ("Scripts/python.exe" if sys.platform == "win32" else "bin/python")

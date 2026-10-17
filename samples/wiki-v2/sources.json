@@ -1,0 +1,18 @@
+{
+  "fictional-notebook-1": {
+    "doc_id": "fictional-notebook-1",
+    "title": "Fictional notebook: the moonlit seed library",
+    "published_at": "2025-01-01",
+    "url": "https://example.invalid/fictional/1",
+    "path": "sources/fictional-notebook-1.md",
+    "text_sha256": "376224e8f6891a2dad4bb5390d8d18397fcd31039ce5dcf76a5c291a1fa4e766"
+  },
+  "fictional-notebook-2": {
+    "doc_id": "fictional-notebook-2",
+    "title": "Fictional notebook: a later planting season",
+    "published_at": "2025-02-01",
+    "url": "https://example.invalid/fictional/2",
+    "path": "sources/fictional-notebook-2.md",
+    "text_sha256": "04461ebb093338e3b3391a71b27f96f98c74440f72c3d562fd8e10431a0da017"
+  }
+}

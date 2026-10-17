@@ -1,5 +1,9 @@
 # 从知乎主页到 Persona Wiki
 
+> 本文保留 **V1 自动任务运行器** 的工作流，适用于已有工作区或明确选择旧命令的用户。
+> 新建 Wiki 推荐 [Agent 直接建库](build-with-agent.md) 和 [V2 文件规范](wiki-format.md)，
+> 不需要先完成这里的聚类、细分类任务和目录任务。V1 导出不会自动转换为 V2。
+
 ## 两个执行入口，同一份任务
 
 `build USER --agent codex` 抓取后通过已登录的 Codex CLI 执行每个模型任务。

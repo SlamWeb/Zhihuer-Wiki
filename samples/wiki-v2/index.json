@@ -1,0 +1,36 @@
+{
+  "schema": "zhihuer_wiki.navigation.v2",
+  "author": {
+    "id": "fictional-seed-librarian",
+    "name": "Fictional Seed Librarian (invented demonstration)"
+  },
+  "topics": [
+    {
+      "id": "seed-library",
+      "title": "Fictional seed-library decisions",
+      "scope": "Invented seed lending practices and their dates and conditions. No text describes a real person.",
+      "pages": [
+        {
+          "id": "first-season",
+          "title": "First season: small starts and dry storage",
+          "scope": "Three complete cards from the first fictional notebook; read beginner and rainy-season conditions.",
+          "entry_ids": [
+            "fictional-e1",
+            "fictional-e2",
+            "fictional-e3"
+          ]
+        },
+        {
+          "id": "later-season",
+          "title": "Later season: continuity and conditional changes",
+          "scope": "Three later cards retain date and context. The larger plot applies to experienced gardeners with shared tools.",
+          "entry_ids": [
+            "fictional-e4",
+            "fictional-e5",
+            "fictional-e6"
+          ]
+        }
+      ]
+    }
+  ]
+}

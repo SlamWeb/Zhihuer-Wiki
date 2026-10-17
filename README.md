@@ -1,233 +1,112 @@
 <h1 align="center">Zhihuer-Wiki</h1>
 
 <p align="center"><strong>把一个知乎博主，变成一份人物 Wiki。</strong></p>
-<p align="center">给 Agent 一个知乎用户主页，拿回有原话、有时间、有出处的知识文件夹。</p>
+<p align="center">让你已有的 Agent 组织材料，交付能直接读、搜和追溯原文的文件夹。</p>
 
-<p align="center">
-  <img alt="Python 3.11+" src="https://img.shields.io/badge/Python-3.11%2B-2277f5?style=flat-square">
-  <img alt="Agent Skill" src="https://img.shields.io/badge/Agent-Skill-282828?style=flat-square">
-  <img alt="Markdown" src="https://img.shields.io/badge/Output-Markdown-64748b?style=flat-square">
-  <img alt="Local-first" src="https://img.shields.io/badge/Local--first-4d7861?style=flat-square">
-</p>
+![知乎主页、原文与带出处的人物 Wiki](docs/assets/cover.png)
 
-![知乎主页经原文与带出处的条目，形成 Persona Wiki](docs/assets/cover.png)
+**推荐入口已改为 Agent 直接建库。** 给 Agent 材料和文件规范，由它理解、归类和整理；项目提供可搬走的格式、虚构示例和校验工具。聚类、向量数据库、额外的模型服务都不是这个入口的前提。
 
-<p align="center">
-  <a href="#features">能做什么</a> ｜
-  <a href="#start">快速开始</a> ｜
-  <a href="#agent">直接交给 Agent</a> ｜
-  <a href="#reading">查阅 Wiki</a> ｜
-  <a href="#architecture">如何工作</a> ｜
-  <a href="#limits">当前边界</a>
-</p>
+人物 → 主题 → 子页 → 完整条目与原文入口。**打开子页就能看到这一页的全部条目、doc ID、日期和原文链接**，无需为了拿到出处再逐个打开条目文件。每篇完整原文独立保存，转述不能取代原文。
 
-Zhihuer-Wiki 是一个开源、在本地运行的人物 Wiki 构建工具。从知乎回答、文章和想法中提取观点条目，再组织成可逐层阅读的主题与子页。原文始终保留，概括始终带着出处。
-
-**模型工作交给你已有的 Codex 或其他编程 Agent。** 项目负责爬取、切批、准备任务、核验和导出，使用 Agent 仍会消耗它的订阅额度或相应费用。
-
-<a id="features"></a>
-
-## ✨ 能做什么
-
-### 📥 一个主页，整理成一份文件夹
-
-输入知乎主页网址或 URL token，抓取公开可访问的回答、文章和想法。已有 Markdown 也能直接导入。登录状态保存在自己的电脑上，模型任务只接收需要处理的材料。
-
-### 🧭 先保住原话，再组织人物知识
-
-一篇材料可以产生多条条目。每条保留转述、代表原话、时间、条件和原文出处，再由 Agent 完整细分类。相反观点和不同时间的表达都会保留，不强行揉成一个中立结论。
-
-人物概览 → 主题页 → 主题子页 → 条目 → 原文。目录提供阅读入口，完整条目提供证据，原文提供核查。普通 Markdown 编辑器、Obsidian 和能读文件的 Agent 都可以使用。
-
-### 🔁 每批有检查点，失败能接着做
-
-默认每批最多十篇原文、约两万估算 token，以先达到的上限为准；长文分段处理，保留完整源文件。条目提取完再候选分组，Agent 对全部条目做细分类。通过核验的任务可复用，失败结果保留供检查。
-
-### 📦 输出归你，不被运行器锁住
-
-交付包括 `wiki/index.md`、主题与子页、逐条证据、原文档案和 `wiki/readable.md`。阅读版可作为数字分身的上下文；目录与链接可供 Agent 按需追溯。项目当前负责建库，不内置回答生成器或在线 Wiki Search。
-
-<a id="start"></a>
-
-## 🚀 快速开始
-
-准备 Python **3.11+**、Git，以及能正常使用的 Codex CLI 或其他编程 Agent。首次下载可选本地 embedding 模型需要网络。
-
-已经能在终端使用 Codex，可以直接：
+## 交给你正在使用的 Agent
 
 ```powershell
 git clone https://github.com/SlamWeb/Zhihuer-Wiki.git
 cd Zhihuer-Wiki
-python run.py https://www.zhihu.com/people/你的URL-token --max-items 10
 ```
 
-`run.py` 自动创建项目 `.venv` 并安装依赖，之后等价于执行下面的构建命令。
-默认包含语义聚类依赖，首次安装可能较慢；先做小样本可显式加 `--grouping none`。
-需要登录知乎时按下方说明操作。想自己管理环境，使用分步方式：
-
-### 1. 下载与安装
-
-```powershell
-git clone https://github.com/SlamWeb/Zhihuer-Wiki.git
-cd Zhihuer-Wiki
-python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -e .
-```
-
-Linux/macOS 将 Python 路径换成 `.venv/bin/python`。后续命令始终使用刚安装项目的同一个解释器。
-
-### 2. 输入知乎主页
-
-先用少量材料跑通：
-
-```powershell
-.\.venv\Scripts\python.exe -m zhihuer_wiki build https://www.zhihu.com/people/你的URL-token --max-items 10
-```
-
-默认使用本机已经登录的 Codex CLI，逐批执行提取、分类与概览任务。可选 `--model` 透传你本机可用的模型；不指定则使用 Codex 当前配置。需要完整抓取时去掉 `--max-items`。
-
-这里的“用户名”是主页地址里的 URL token，例如 `/people/wu-ren-jun-28` 中的 `wu-ren-jun-28`；显示昵称不能唯一确定账号。
-
-若尚未安装或登录 Codex CLI，先按[官方说明](https://learn.chatgpt.com/docs/non-interactive-mode)完成配置，或使用下面的 Agent Skill 入口。CLI 会复用现有登录态；没有模型可用时会明确失败，不生成假 Wiki。
-
-### 3. 抓取遇到登录限制时
-
-```powershell
-.\.venv\Scripts\python.exe -m zhihuer_wiki login
-```
-
-在弹出的浏览器里自行登录知乎，再重复构建命令。优先复用已安装 Chrome/Edge；没有可用浏览器时运行：
-
-```powershell
-.\.venv\Scripts\python.exe -m playwright install chromium
-```
-
-状态默认存在 `.local/auth/zhihu_storage_state.json`，不需要把 Cookie 粘贴给模型。平台限制、验证码或登录过期仍可能阻止抓取。
-
-### 4. 打开结果
+在这个文件夹打开 Codex 或其他能读写文件的 Agent，发送：
 
 ```text
-outputs/<URL-token>/wiki/index.md
-outputs/<URL-token>/wiki/readable.md
+读取 .agents/skills/zhihuer-wiki/SKILL.md。
+把 https://www.zhihu.com/people/你的URL-token 的公开材料整理为人物 Wiki，
+按 docs/wiki-format.md 的 V2 规范输出到 outputs/你的URL-token/wiki。
+先处理最多10篇原文，保留完整来源、日期、代表原话和适用条件。
+分类前先理解整批材料；不要默认走旧版聚类任务，也不要每几个条目就新建一个碎页。
+完成后生成阅读页、校验，并给我 index.md。
 ```
 
-核验结果：
-
-```powershell
-.\.venv\Scripts\python.exe -m zhihuer_wiki validate --workspace outputs/你的URL-token
-```
-
-已完成干净克隆的真实小样本验证：输入URL token，重新抓取3篇知乎回答，使用已登录Codex调用Luna，导出12条条目、7个子页和5个主题，结构与出处核验通过。113项离线测试通过；这不代表全量语料的语义质量已经验证。详见[验证记录](docs/verification.md)。
-
-<a id="agent"></a>
-
-## 🪄 直接交给 Codex 或其他 Agent
-
-在克隆后的仓库打开 Agent，发送：
+也可以直接提供已有 Markdown：
 
 ```text
-读取 .agents/skills/zhihuer-wiki/SKILL.md，
-把 https://www.zhihu.com/people/你的URL-token 做成一份 Persona Wiki。
-先处理最多10篇，完成后核验并给我 index.md 和 readable.md。
+读取这个仓库的 zhihuer-wiki Skill。
+用 ./my-raw 下已有原文，按 V2 规范构建 ./outputs/demo/wiki。
+由你完成条目提取和全局归类，保留完整原文；生成阅读页并校验。
 ```
 
-Codex 可发现仓库内的 [zhihuer-wiki Skill](.agents/skills/zhihuer-wiki/SKILL.md)。其他能执行命令、读写文件的 Agent 也能直接读取同一份说明。该入口使用**当前 Agent**做模型工作，不需要额外启动 Codex CLI。
+这里使用的是**当前 Agent**，不额外启动一个模型运行器。Agent 的额度与模型使用成本仍取决于你自己的环境。
 
-已有爬取材料：
+抓取可以复用本项目已有爬虫；已有材料可以跳过抓取。涉及登录时由用户在本机完成，登录态留在本机。详细步骤见 [Agent 建库说明](docs/build-with-agent.md)。
 
-```powershell
-.\.venv\Scripts\python.exe -m zhihuer_wiki build 你的URL-token --raw-dir ./my-raw --agent manual
-```
-
-然后让当前 Agent 循环执行 `next` → 读取完整输入 → 写响应 → `submit`，直到完成。模型结果经过同样的原话、ID覆盖和引用核验。
-
-中断后继续：
-
-```powershell
-.\.venv\Scripts\python.exe -m zhihuer_wiki resume --workspace outputs/你的URL-token
-```
-
-不需要登录知乎的练习材料在 [samples/demo-raw](samples/demo-raw)，全部为虚构文本。用 `--raw-dir samples/demo-raw` 导入，仍需真实 Agent 做语义提取，示例不会冒充真实抓取结果。
-
-<a id="reading"></a>
-
-## 📖 让 Agent 查阅已有 Wiki
-
-有文件读取和文本搜索能力的 Agent 可以直接使用产物，不需要额外的工具服务器。在项目里发送：
+## 交付长什么样
 
 ```text
-读取 .agents/skills/zhihuer-wiki/SKILL.md，
-使用 outputs/你的URL-token/wiki 回答：这位博主在选择工作时更看重什么？
-先从主题目录定位，按需读条目和原文，给出文件出处。
+wiki/
+  AGENTS.md                 搬走文件夹后仍能找到的查阅规则
+  index.md                  人物入口，所有主题及范围
+  index.json                主题、子页与条目归属
+  entries.json              全部规范条目，稳定 entry_id / doc_id
+  sources.json              原文目录：标题、日期、URL、路径、哈希
+  topics/
+    work.md                 该主题的全部子页与范围
+  pages/
+    choosing-work.md        所属条目的完整原话、转述、条件、日期、来源
+  sources/
+    source-0001.md          完整原文，正文不被摘要覆盖
 ```
 
-Agent 从 `index.md` 出发，沿主题页、子页、条目找到原话和原文；有信息缺口再沿链接补读或使用文本搜索。时间与条件不同的表达分别保留，不默认把整个 `readable.md` 塞进上下文。单独搬走 Wiki 后也可以把[查阅说明](docs/reading.md)交给 Agent，并指定新的文件夹路径。
+`index.json`、`entries.json`、`sources.json` 是机器可核验的记录；Markdown 是它们的阅读视图。Agent 负责理解和分类，脚本负责检查引用与归属、生成一致的阅读页。
 
-查阅不会启动新抓取或修改 Wiki。完整规则与例子见[查阅说明](docs/reading.md)。
+完整字段、最小 JSON 示例和验收要求见 [V2 文件规范](docs/wiki-format.md)。可以直接打开 [虚构 Wiki 示例](samples/wiki-v2/index.md) 看最终效果。
 
-<a id="architecture"></a>
+分类按材料规模和问题范围调整。大批材料先建立整体目录，再在后续批次复用、合并或补充；不按输入批次机械创建一组新主题。页数和每页条目数是阅读设计，不是必须填满的配额。
 
-## ⚙️ 如何工作
+## 只用 Python 就能生成与校验阅读页
 
-```text
-知乎主页 / 已有 Markdown
-         ↓
-    原文快照与出处
-         ↓
-  分批完整提取带原话的条目
-         ↓
-  本地向量 + KMeans 候选预分组
-         ↓
-  Agent 完整细分类，形成具体子页
-         ↓
-  整理父级主题，生成带依据的概览
-         ↓
-  核验并导出 Markdown Wiki
-```
-
-**KMeans 负责把可能接近的条目放在一起，Agent 负责理解它们。** K不是最终页数，聚类结果不能直接当人物知识结构。小于或等于200条时跳过数值预分组，直接完整分类。较大语料默认使用本地多语言 embedding；需要时安装：
+Agent 写好三份 JSON 和完整原文后运行：
 
 ```powershell
-.\.venv\Scripts\python.exe -m pip install -e ".[semantic]"
+python scripts/wiki_folder.py render --wiki outputs/你的URL-token/wiki
+python scripts/wiki_folder.py validate --wiki outputs/你的URL-token/wiki
 ```
 
-模型默认 `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2`，可通过 `--embedding-model` 修改。希望更轻量时，显式 `--grouping tfidf` 使用字符 TF-IDF 候选聚类；它是词面分组，不声称等同语义向量。`--grouping none` 可跳过预分组。
+这两个命令只需要 Python 3.11+ 标准库，不安装 embedding、不调用模型，也不做语义分类。可以先在公开虚构示例上核验：
 
-**子页讨论具体问题，父级负责导航。** “网课中的课堂管理”和“教育资源的接入条件”可以同属教育主题，但不会仅因相近就合成一个大页。全局整理保留子页，不在目录阶段覆盖条目。
+```powershell
+python scripts/wiki_folder.py validate --wiki samples/wiki-v2
+```
 
-**核验检查结构与出处，不替人物裁定价值观。** 检查原话确实存在、每篇材料有处理结果、每条有主归属、链接和依据ID有效。语义是否完整、是否真正理解人物，仍有模型判断的局限。
+校验会检查条目是否遗漏或重复归属、原话是否存在于对应全文、条目日期是否与来源记录一致、原文哈希及相对路径和阅读页是否有效。来源标题、日期和 URL 由 Agent 如实登记，脚本不会联网认证这些元数据，也不能证明分类和转述在语义上完全正确。
 
-### 本地文件放在哪里？
+## 让 Agent 查阅或继续对话
 
-| 位置 | 内容 |
-| --- | --- |
-| `.local/auth/` | 自己的知乎浏览器登录状态 |
-| `outputs/<作者>/raw/` | 爬取的 Markdown 与 manifest |
-| `outputs/<作者>/evidence/` | 原文快照、已接受条目与任务响应 |
-| `outputs/<作者>/derived/` | 候选分组、子页、目录与概览中间结果 |
-| `outputs/<作者>/.work/` | 任务输入、Schema、检查点与Agent日志 |
-| `outputs/<作者>/wiki/` | 可单独带走的 Wiki 文件夹 |
-| `samples/demo-raw/` | 明确标注为虚构的公开示例 |
+```text
+用 ./outputs/你的URL-token/wiki 回答我的问题。
+先读 AGENTS.md 和 index.md，再打开相关主题、子页和需要的完整原文。
+已经完整读过且仍在上下文中的材料可以复用，只为具体信息缺口继续找。
+不要把目录、搜索回执、调试字段或检索过程塞进最终回答的参考材料。
+```
 
-输出、原文、登录态和模型缓存不随 Git 分发。更多结构与更新边界见 [工作流说明](docs/workflow.md)。
+普通文件读取、目录列表和文本搜索就够用，不需要独立工具服务器。Agent 可以直接跳到搜索命中的子页，不必每次走完全部层级。
 
-<a id="limits"></a>
+多轮对话按当前任务判断：已有原文充分就复用；只缺一部分就补那部分；换问题时重新检查覆盖范围。改写与致谢通常不新增取证。**同一个大主题不等于材料足够，不要求每轮重凑原文篇数。**
 
-## 🧭 当前边界
+需要生成回答时，选中的原文只携带有用的标题、日期与全文；检索日志、排名、内部状态留在工作记录里。需要出处时再保留相应文件引用。具体规则见 [查阅与多轮复用](docs/reading.md)。
 
-- **抓取范围**：只能处理本机当前可访问的内容；限量或部分抓取会保留范围报告，不承诺获得某位博主的全部历史。
-- **模型质量**：核验能拒绝编造引文和丢失归属，不能证明转述与分类始终正确。人物 Wiki 是来源绑定的整理结果，不是经过本人确认的人格档案。
-- **更新**：同一工作区用于断点恢复。原文变更或增加材料先构建到新的 `--out`；本版不实现跨版本局部语义合并，避免把旧观点悄悄覆盖。
-- **阅读与搜索**：Skill 提供使用现有文件工具查阅的规则；没有内置 Agentic Search 运行器或生成质量评估，也没有接入任何 LLM API provider。
-- **使用成本**：不另收模型API费用不等于免费推理；Agent额度、本地模型下载与计算成本仍由自己的环境承担。
+## 旧版自动运行器
 
-## 📚 深入了解
+已有 V1 工作区仍可使用 `python run.py ...` 或 `python -m zhihuer_wiki build ...`，按 `next / submit / resume` 完成原来的任务。这个兼容入口仍有候选聚类与小批分类，导出 `subpages/`、`entries/` 和 `readable.md`；**它不会自动变成上面的 V2 格式**。
 
-- [构建工作流与文件结构](docs/workflow.md)
-- [查阅 Wiki 的规则与例子](docs/reading.md)
-- [Agent Skill](.agents/skills/zhihuer-wiki/SKILL.md)
-- [项目契约](SPEC.md)
-- [验证记录](docs/verification.md)
-- [PersonClone](https://github.com/SlamWeb/PersonClone)：本项目的爬取与人物 Wiki 思路来源。
+V1 的安装、抓取登录、断点恢复和原有参数见 [旧版工作流](docs/workflow.md)。使用 Agent 新建 V2 时，按本页和 Skill 的文件规范工作即可。
 
-开发验证：`python -m pip install -e ".[dev]"`，再运行 `python -m pytest -q`。离线测试使用虚构语料与受控响应；真实知乎抓取和真实 Agent 推理的验证单独记录。
+## 边界与验证
+
+- 发布的是文件格式、Agent 工作说明与校验器。主题质量和取证决策依赖实际使用的 Agent。
+- 原文、生成库、浏览器登录态和模型缓存留在用户本机。仓库只包含明确标注的虚构样例。
+- 新资料可以由 Agent 在现有目录上整理，保留稳定 ID 与旧证据；在新版本文件夹校验后交付。旧的已核验原文不要原地覆盖。
+- 格式校验通过不代表人物模拟优于 RAG，也不代表还原了作者本人。这里没有内置在线回答服务。
+
+[文件规范](docs/wiki-format.md) · [Agent 建库](docs/build-with-agent.md) · [查阅规则](docs/reading.md) · [Agent Skill](.agents/skills/zhihuer-wiki/SKILL.md) · [项目契约](SPEC.md) · [验证记录](docs/verification.md)
+
+爬虫和人物 Wiki 的工程来源：[PersonClone](https://github.com/SlamWeb/PersonClone)。
